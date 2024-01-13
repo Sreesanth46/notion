@@ -3,11 +3,11 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
 
 if (!process.env.DATABASE_URL) {
-  console.warn('Cannot find database url');
+  console.warn('🔴 Cannot find database url');
 }
 
 export default {
-  schema: '.src/lib/supabase/schema.ts',
+  schema: './src/lib/supabase/schema.ts',
   out: './migrations',
   driver: 'pg',
   dbCredentials: {
