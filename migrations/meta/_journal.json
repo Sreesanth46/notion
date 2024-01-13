@@ -8,6 +8,20 @@
       "when": 1705146942508,
       "tag": "0000_low_whirlwind",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1705147542189,
+      "tag": "0001_lethal_malice",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1705147560432,
+      "tag": "0002_great_luke_cage",
+      "breakpoints": true
     }
   ]
 }
