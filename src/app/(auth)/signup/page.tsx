@@ -22,6 +22,7 @@ import { z } from 'zod';
 import Logo from '@/../public/cypresslogo.svg';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { FormSchema } from '@/lib/types';
+import { actionSignUpUser } from '@/lib/server-action/auth-actions';
 
 const SignUpFormSchema = z
   .object({
@@ -74,7 +75,16 @@ const SignUpPage = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
-    setSubmitError('ssssssssssssssssssssssssssssssss');
+    const { error } = await actionSignUpUser({ email, password });
+
+    console.log({ error });
+    if (error) {
+      setSubmitError(error.message);
+      form.reset();
+      return;
+    }
+
+    setConfirmation(true);
   };
 
   return (
@@ -90,17 +100,21 @@ const SignUpPage = () => {
         ">
         <Link
           href="/"
-          className="w-full
+          className="
+          w-full
           flex
           justify-left
-          items-center
-        ">
+          items-center">
           <Image src={Logo} alt="cypress Logo" width={50} height={50} />
-          <span className="font-semibold dark:text-white text-4xl ml-2">
+          <span
+            className="font-semibold
+          dark:text-white text-4xl first-letter:ml-2">
             cypress.
           </span>
         </Link>
-        <FormDescription>
+        <FormDescription
+          className="
+        text-foreground/60">
           An all-In-One Collaboration and Productivity Platform
         </FormDescription>
         {!confirmation && !codeExchangeError && (
@@ -109,11 +123,12 @@ const SignUpPage = () => {
               disabled={isLoading}
               control={form.control}
               name="email"
-              render={field => (
+              render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input type="email" placeholder="Email" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -121,11 +136,12 @@ const SignUpPage = () => {
               disabled={isLoading}
               control={form.control}
               name="password"
-              render={field => (
+              render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input type="password" placeholder="Password" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -133,15 +149,16 @@ const SignUpPage = () => {
               disabled={isLoading}
               control={form.control}
               name="confirmPassword"
-              render={field => (
+              render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Confirm password"
+                      placeholder="Confirm Password"
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -164,10 +181,10 @@ const SignUpPage = () => {
             <Alert className={confirmationAndErrorStyles}>
               {!codeExchangeError && <MailCheck className="h-4 w-4" />}
               <AlertTitle>
-                {codeExchangeError ? 'Invalid link' : 'Check your email.'}
+                {codeExchangeError ? 'Invalid Link' : 'Check your email.'}
               </AlertTitle>
               <AlertDescription>
-                {codeExchangeError || 'An email confirmation has been sent'}
+                {codeExchangeError || 'An email confirmation has been sent.'}
               </AlertDescription>
             </Alert>
           </>
